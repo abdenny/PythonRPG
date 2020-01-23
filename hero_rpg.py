@@ -6,9 +6,10 @@
 # 2. do nothing - in which case the goblin will attack him anyway
 # 3. flee
 class Character:
-    def __init__(self, health, power):
+    def __init__(self, health, power, name):
         self.health = health
         self.power = power
+        self.name = name
     def attack(self, enemy):
         enemy.health -= self.power
         print(f"You do {self.power} damage to the enemy.")
@@ -20,7 +21,7 @@ class Character:
         else:
             return False
     def print_status(self):
-        print(f"You have {self.health} health and {self.power} power.")
+        print(f"{self.name} has {self.health} health and {self.power} power.")
 
 class Hero(Character):
     pass
@@ -28,10 +29,15 @@ class Hero(Character):
 class Goblin(Character):
     pass
 
+class Zombie(Character):
+    def alive(self):
+        return True
+
 def main():
 
-    hero = Hero(10, 5)
-    goblin = Goblin(6, 2)
+    hero = Hero(10, 5, "Rand al'Thor")
+    goblin = Goblin(6, 2, "Goblin")
+    zombie = Zombie(1, 1, "Zombie")
 
     while goblin.alive() and hero.alive():
         hero.print_status()
@@ -56,5 +62,36 @@ def main():
         if goblin.health > 0:
             # Goblin attacks hero
             goblin.attack(hero)
+
+    print(f"""
+
+Good job defeating the {goblin.name}, {hero.name}! A new enemy is approaching.....
+    
+    """)
+
+    while zombie.alive() and hero.alive():
+        print(f"\nIt's a showdown between the {zombie.name} and {hero.name}!\n")
+        hero.print_status()
+        zombie.print_status()
+        print()
+        print("What do you want to do?")
+        print("1. fight zombie")
+        print("2. do nothing")
+        print("3. flee")
+        print("> ", end=' ')
+        raw_input = input()
+        if raw_input == "1":
+            # Hero attacks zombie
+            hero.attack(zombie)
+        elif raw_input == "2":
+            pass
+        elif raw_input == "3":
+            print("Smart move! They can't die you know.....")
+            break
+        else:
+            print("Invalid input {}".format(raw_input))
+        if zombie.health > 0:
+            # zombie attacks hero
+            zombie.attack(hero)
 
 main()
