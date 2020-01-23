@@ -1,10 +1,4 @@
-#!/usr/bin/env python
 
-# In this simple RPG game, the hero fights the goblin. He has the options to:
-
-# 1. fight goblin
-# 2. do nothing - in which case the goblin will attack him anyway
-# 3. flee
 class Character:
     def __init__(self, health, power, name):
         self.health = health
@@ -12,7 +6,7 @@ class Character:
         self.name = name
     def attack(self, enemy):
         enemy.health -= self.power
-        print(f"You do {self.power} damage to the enemy.")
+        print(f"{self.name} does {self.power} damage.")
         if enemy.health <= 0:
             print("The enemy is dead.")
     def alive(self):
@@ -36,21 +30,20 @@ class Zombie(Character):
 def main():
 
     hero = Hero(10, 5, "Rand al'Thor")
-    goblin = Goblin(6, 2, "Goblin")
-    zombie = Zombie(1, 1, "Zombie")
+    goblin = Goblin(6, 2, "The Goblin")
+    zombie = Zombie(1, 1, "The Zombie")
 
     while goblin.alive() and hero.alive():
         hero.print_status()
         goblin.print_status()
         print()
         print("What do you want to do?")
-        print("1. fight goblin")
-        print("2. do nothing")
-        print("3. flee")
+        print("1. Fight the goblin.")
+        print("2. Do nothing.")
+        print("3. Flee the fight.")
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
-            # Hero attacks goblin
             hero.attack(goblin)
         elif raw_input == "2":
             pass
@@ -60,15 +53,14 @@ def main():
         else:
             print("Invalid input {}".format(raw_input))
         if goblin.health > 0:
-            # Goblin attacks hero
             goblin.attack(hero)
-
+    print()
+    print("*" * 40)
     print(f"""
-
 Good job defeating the {goblin.name}, {hero.name}! A new enemy is approaching.....
-    
     """)
-
+    print("*" * 40)
+    print()
     while zombie.alive() and hero.alive():
         print(f"\nIt's a showdown between the {zombie.name} and {hero.name}!\n")
         hero.print_status()
@@ -81,8 +73,9 @@ Good job defeating the {goblin.name}, {hero.name}! A new enemy is approaching...
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
-            # Hero attacks zombie
             hero.attack(zombie)
+            print("But what is dead may never die.....")
+            zombie.attack(hero)
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -90,8 +83,7 @@ Good job defeating the {goblin.name}, {hero.name}! A new enemy is approaching...
             break
         else:
             print("Invalid input {}".format(raw_input))
-        if zombie.health > 0:
-            # zombie attacks hero
-            zombie.attack(hero)
+        # if zombie.health > 0:
+        #     zombie.attack(hero)
 
 main()
