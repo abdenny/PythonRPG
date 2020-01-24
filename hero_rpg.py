@@ -2,17 +2,28 @@ import random
 import time
 ################# Characters
 class Character:
-    def __init__(self, health, power, name, coins, armor):
+    def __init__(self, health, power, name, coins, armor, evade):
         self.health = health
         self.power = power
         self.name = name
         self.coins = coins 
         self.armor = armor
+        self.evade = evade
     def attack(self, enemy):
-        enemy.health -= self.power
-        print(f"{self.name} does {self.power} damage.")
+        if enemy.evade > 0:
+            if random.randint(1, ((20/enemy.evade) + 1)) == 3:
+                print(f"{enemy.name} has evaded the attack from {self.name}.")
+        if enemy.evade > 0:
+            if random.randint(1, ((20/enemy.evade) + 1)) == 3:
+                print(f"{enemy.name} has evaded the attack from {self.name}.")
+        else:
+            self.damage = self.power - enemy.armor
+            enemy.health -= self.damage
+            print(f"{self.name} does {self.damage} damage to the {enemy.name}.\n")
         if enemy.health <= 0:
             print("The enemy is dead.")
+            quit()
+
     def alive(self):
         if self.health > 0:
             return True
@@ -36,6 +47,9 @@ class Hero(Character):
             print(f"{enemy.name} has been defeated!") 
             self.coins += enemy.coins
             print(f"You gained {enemy.coins} coins. You now have {self.coins} coins.")
+    def buy(self, item):
+        self.coins -= item.cost
+        item.apply(self)
 
 
 class Goblin(Character):
@@ -54,20 +68,21 @@ class Medic(Character):
 class Shadow(Character):
     pass
 
+
 ################### Store and items
 class Tonic(object):
     cost = 5
     name = 'Tonic'
-    def apply(self, character):
-        character.health += 2
-        print("{}'s health increased to {}.".format(character.name, character.health))
+    def apply(self, hero):
+        hero.health += 2
+        print("{}'s health increased to {}.".format(hero.name, hero.health))
 
 class SuperTonic(object):
     cost = 8
     name = 'Super Tonic'
-    def apply(self, character):
-        character.health += 10
-        print("{}'s health increased to {}.".format(character.name, character.health))
+    def apply(self, hero):
+        hero.health += 10
+        print("{}'s health increased to {}.".format(hero.name, hero.health))
 
 class Sword(object):
     cost = 10
@@ -80,15 +95,23 @@ class Armor(object):
     cost = 10
     name = 'Armor'
     def apply(self, hero):
-        hero.power += 2
-        print("{}'s power increased to {}.".format(hero.name, hero.power))
+        hero.armor += 2
+        print("{}'s armor increased to {}.".format(hero.name, hero.armor))
+
+class Evade(object):
+    cost = 5
+    name = 'Evade'
+    def apply(self, hero):
+        hero.evade += 2
+        print("{}'s evade increased to {}.".format(hero.name, hero.evade))
 
 class Store():
     tonic = Tonic()
     super_tonic = SuperTonic()
     sword = Sword()
     armor = Armor()
-    items = [tonic, super_tonic, sword, armor]
+    evade = Evade()
+    items = [tonic, super_tonic, sword, armor, evade]
     def do_shopping(self, hero):
         while True:
             print("=====================")
@@ -105,7 +128,7 @@ class Store():
                 break
             else:
                 ItemToBuy = Store.items[raw_imp - 1]
-                item = ItemToBuy()
+                item = ItemToBuy
                 hero.buy(item)
     def go_to_store(self, character):
         store_status = int(input("Press 1. to go to the store, Press 2. to journey on...."))
@@ -113,14 +136,14 @@ class Store():
             self.do_shopping(character)
         else:
             exit
-
+#######################################################################################################
 def main():
 
-    hero = Hero(100, 5, "Rand al'Thor", 0, 0)
-    goblin = Goblin(6, 2, "The Goblin", 5, 0)
-    zombie = Zombie(1, 1, "The Zombie", 0, 0)
-    medic = Medic(5,1, "The Medic", 6, 0 )
-    shadow = Shadow(1, 1, "The Shadow", 10, 0)
+    hero = Hero(100, 5, "Rand al'Thor", 0, 0, 0)
+    goblin = Goblin(6, 2, "The Goblin", 5, 0, 0)
+    zombie = Zombie(1, 1, "The Zombie", 0, 0, 0)
+    medic = Medic(5,1, "The Medic", 6, 0, 0 )
+    shadow = Shadow(1, 1, "The Shadow", 10, 0, 0)
     store = Store()
 
     while goblin.alive() and hero.alive():
