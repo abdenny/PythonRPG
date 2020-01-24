@@ -1,10 +1,12 @@
 import random
+import time
 
 class Character:
-    def __init__(self, health, power, name):
+    def __init__(self, health, power, name, coins):
         self.health = health
         self.power = power
         self.name = name
+        self.coins = coins 
     def attack(self, enemy):
         enemy.health -= self.power
         print(f"{self.name} does {self.power} damage.")
@@ -17,6 +19,46 @@ class Character:
             return False
     def print_status(self):
         print(f"{self.name} has {self.health} health and {self.power} power.")
+
+class Tonic(object):
+    cost = 5
+    name = 'tonic'
+    def apply(self, character):
+        character.health += 2
+        print("{}'s health increased to {}.".format(character.name, character.health))
+
+
+class Sword(object):
+    cost = 10
+    name = 'sword'
+    def apply(self, hero):
+        hero.power += 2
+        print("{}'s power increased to {}.".format(hero.name, hero.power))
+
+class Store(object):
+    items = [Tonic, Sword]
+    def do_shopping(self, hero):
+        while True:
+            print("=====================")
+            print("Welcome to the store!")
+            print("=====================")
+            print("You have {} coins.".format(hero.coins))
+            print("What do you want to do?")
+            for i in range(len(Store.items)):
+                item = Store.items[i]
+                print("{}. buy {} ({})".format(i + 1, item.name, item.cost))
+            print("10. leave")
+            raw_imp = int(input("> "))
+            if raw_imp == 10:
+                break
+            else:
+                ItemToBuy = Store.items[raw_imp - 1]
+                item = ItemToBuy()
+                hero.buy(item)
+    def go_to_store(self, character):
+        store_status = int(input("Press 1. to go to the store, Press something else to journey on...."))
+        if store_status == 1:
+            self.do_shopping(character)
 
 class Hero(Character):  
     def crit_chance(self):
@@ -31,6 +73,8 @@ class Hero(Character):
         print(f"{self.name} does {self.damage} to {enemy.name}!")
         if enemy.health <= 0:
             print(f"{enemy.name} has been defeated!") 
+            self.coins += enemy.coins
+            print(f"You gained {enemy.coins} coins. You now have {self.coins} coins.")
 
 
 class Goblin(Character):
@@ -51,11 +95,12 @@ class Shadow(Character):
 
 def main():
 
-    hero = Hero(100, 5, "Rand al'Thor")
-    goblin = Goblin(6, 2, "The Goblin")
-    zombie = Zombie(1, 1, "The Zombie")
-    medic = Medic(5,1, "The Medic")
-    shadow = Shadow(1, 1, "The Shadow")
+    hero = Hero(100, 5, "Rand al'Thor", 0)
+    goblin = Goblin(6, 2, "The Goblin", 5)
+    zombie = Zombie(1, 1, "The Zombie", 100)
+    medic = Medic(5,1, "The Medic", 6 )
+    shadow = Shadow(1, 1, "The Shadow", 10)
+    store = Store()
 
     while goblin.alive() and hero.alive():
         hero.print_status()
@@ -78,11 +123,14 @@ def main():
             print("Invalid input {}".format(raw_input))
         if goblin.health > 0:
             goblin.attack(hero)
+            
     print()
     print("*" * 40)
     print(f"""
-Good job defeating the {goblin.name}, {hero.name}! A new enemy is approaching.....
+Good job defeating the {goblin.name}, {hero.name}! 
     """)
+    print("*" * 40)
+    store.go_to_store(hero)
     print("*" * 40)
     print()
     while zombie.alive() and hero.alive():
@@ -108,6 +156,8 @@ Good job defeating the {goblin.name}, {hero.name}! A new enemy is approaching...
         else:
             print("Invalid input {}".format(raw_input))
     print()
+    print("*" * 40)
+    store.go_to_store(hero)
     print("*" * 40)
     print(f"""
 A new enemy is approaching.....
@@ -138,6 +188,7 @@ A new enemy is approaching.....
             medic.attack(hero)
     print()
     print("*" * 40)
+    store.go_to_store(hero)
     print(f"""
 Good job defeating the {medic.name}, {hero.name}! A new enemy is approaching.....
     """)
@@ -169,6 +220,7 @@ Good job defeating the {medic.name}, {hero.name}! A new enemy is approaching....
             shadow.attack(hero)
     print()
     print("*" * 40)
+    store.go_to_store(hero)
     print(f"""
 Good job defeating the {shadow.name}, {hero.name}! A new enemy is approaching.....
     """)
