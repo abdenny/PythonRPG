@@ -1,12 +1,13 @@
 import random
 import time
-
+################# Characters
 class Character:
-    def __init__(self, health, power, name, coins):
+    def __init__(self, health, power, name, coins, armor):
         self.health = health
         self.power = power
         self.name = name
         self.coins = coins 
+        self.armor = armor
     def attack(self, enemy):
         enemy.health -= self.power
         print(f"{self.name} does {self.power} damage.")
@@ -20,47 +21,7 @@ class Character:
     def print_status(self):
         print(f"{self.name} has {self.health} health and {self.power} power.")
 
-class Tonic(object):
-    cost = 5
-    name = 'tonic'
-    def apply(self, character):
-        character.health += 2
-        print("{}'s health increased to {}.".format(character.name, character.health))
-
-
-class Sword(object):
-    cost = 10
-    name = 'sword'
-    def apply(self, hero):
-        hero.power += 2
-        print("{}'s power increased to {}.".format(hero.name, hero.power))
-
-class Store(object):
-    items = [Tonic, Sword]
-    def do_shopping(self, hero):
-        while True:
-            print("=====================")
-            print("Welcome to the store!")
-            print("=====================")
-            print("You have {} coins.".format(hero.coins))
-            print("What do you want to do?")
-            for i in range(len(Store.items)):
-                item = Store.items[i]
-                print("{}. buy {} ({})".format(i + 1, item.name, item.cost))
-            print("10. leave")
-            raw_imp = int(input("> "))
-            if raw_imp == 10:
-                break
-            else:
-                ItemToBuy = Store.items[raw_imp - 1]
-                item = ItemToBuy()
-                hero.buy(item)
-    def go_to_store(self, character):
-        store_status = int(input("Press 1. to go to the store, Press something else to journey on...."))
-        if store_status == 1:
-            self.do_shopping(character)
-
-class Hero(Character):  
+class Hero(Character): 
     def crit_chance(self):
         self.critical_strike = 1
         if random.randint(1,6) == 1:
@@ -93,13 +54,73 @@ class Medic(Character):
 class Shadow(Character):
     pass
 
+################### Store and items
+class Tonic(object):
+    cost = 5
+    name = 'Tonic'
+    def apply(self, character):
+        character.health += 2
+        print("{}'s health increased to {}.".format(character.name, character.health))
+
+class SuperTonic(object):
+    cost = 8
+    name = 'Super Tonic'
+    def apply(self, character):
+        character.health += 10
+        print("{}'s health increased to {}.".format(character.name, character.health))
+
+class Sword(object):
+    cost = 10
+    name = 'Sword'
+    def apply(self, hero):
+        hero.power += 2
+        print("{}'s power increased to {}.".format(hero.name, hero.power))
+
+class Armor(object):
+    cost = 10
+    name = 'Armor'
+    def apply(self, hero):
+        hero.power += 2
+        print("{}'s power increased to {}.".format(hero.name, hero.power))
+
+class Store():
+    tonic = Tonic()
+    super_tonic = SuperTonic()
+    sword = Sword()
+    armor = Armor()
+    items = [tonic, super_tonic, sword, armor]
+    def do_shopping(self, hero):
+        while True:
+            print("=====================")
+            print("Welcome to the store!")
+            print("=====================")
+            print("You have {} coins.".format(hero.coins))
+            print("What do you want to do?")
+            for i in range(len(Store.items)):
+                item = Store.items[i]
+                print("{}. buy {} ({})".format(i + 1, item.name, item.cost))
+            print("10. leave")
+            raw_imp = int(input("> "))
+            if raw_imp == 10:
+                break
+            else:
+                ItemToBuy = Store.items[raw_imp - 1]
+                item = ItemToBuy()
+                hero.buy(item)
+    def go_to_store(self, character):
+        store_status = int(input("Press 1. to go to the store, Press 2. to journey on...."))
+        if store_status == 1:
+            self.do_shopping(character)
+        else:
+            exit
+
 def main():
 
-    hero = Hero(100, 5, "Rand al'Thor", 0)
-    goblin = Goblin(6, 2, "The Goblin", 5)
-    zombie = Zombie(1, 1, "The Zombie", 100)
-    medic = Medic(5,1, "The Medic", 6 )
-    shadow = Shadow(1, 1, "The Shadow", 10)
+    hero = Hero(100, 5, "Rand al'Thor", 0, 0)
+    goblin = Goblin(6, 2, "The Goblin", 5, 0)
+    zombie = Zombie(1, 1, "The Zombie", 0, 0)
+    medic = Medic(5,1, "The Medic", 6, 0 )
+    shadow = Shadow(1, 1, "The Shadow", 10, 0)
     store = Store()
 
     while goblin.alive() and hero.alive():
