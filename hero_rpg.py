@@ -18,10 +18,10 @@ class Character:
     def print_status(self):
         print(f"{self.name} has {self.health} health and {self.power} power.")
 
-class Hero(Character):
+class Hero(Character):  
     def crit_chance(self):
         self.critical_strike = 1
-        if random.randint(1,2) == 1:
+        if random.randint(1,6) == 1:
             self.critical_strike = 2
             print(f"{self.name} lands a critical strike!")
         return self.critical_strike
@@ -44,7 +44,10 @@ class Medic(Character):
     def crit_heal_chance(self):
         if random.randint(1,6) == 1:
             self.health += 2
-            print(f"{self.name} is healing! THey regenerated two HP!")
+            print(f"Oh no, {self.name} is healing! They regenerated two HP!")
+
+class Shadow(Character):
+    pass
 
 def main():
 
@@ -52,6 +55,7 @@ def main():
     goblin = Goblin(6, 2, "The Goblin")
     zombie = Zombie(1, 1, "The Zombie")
     medic = Medic(5,1, "The Medic")
+    shadow = Shadow(1, 1, "The Shadow")
 
     while goblin.alive() and hero.alive():
         hero.print_status()
@@ -122,6 +126,7 @@ A new enemy is approaching.....
         raw_input = input()
         if raw_input == "1":
             hero.attack(medic)
+            medic.crit_heal_chance()
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -137,6 +142,38 @@ A new enemy is approaching.....
 Good job defeating the {medic.name}, {hero.name}! A new enemy is approaching.....
     """)
     print("*" * 40)
+    while shadow.alive() and hero.alive():
+        hero.print_status()
+        shadow.print_status()
+        print()
+        print("What do you want to do?")
+        print("1. Fight the shadow.")
+        print("2. Do nothing.")
+        print("3. Flee the fight.")
+        print("> ", end=' ')
+        raw_input = input()
+        if raw_input == "1":
+            if random.randint(1,11) == 1 :
+                print(f"{shadow.name} defense's are down! You can strike...")
+                hero.attack(shadow)
+            else:
+                print("Shadow dodges the attack!")
+        elif raw_input == "2":
+            pass
+        elif raw_input == "3":
+            print("Goodbye.")
+            break
+        else:
+            print("Invalid input {}".format(raw_input))
+        if shadow.health > 0:
+            shadow.attack(hero)
+    print()
+    print("*" * 40)
+    print(f"""
+Good job defeating the {shadow.name}, {hero.name}! A new enemy is approaching.....
+    """)
+    print("*" * 40)
+    print()    
 main()
 
 
