@@ -1,6 +1,6 @@
 import random
 import time
-################# Characters
+
 class Character:
     def __init__(self, health, power, name, coins, armor, evade):
         self.health = health
@@ -68,8 +68,6 @@ class Medic(Character):
 class Shadow(Character):
     pass
 
-
-################### Store and items
 class Tonic(object):
     cost = 5
     name = 'Tonic'
@@ -136,17 +134,18 @@ class Store():
             self.do_shopping(character)
         else:
             exit
-#######################################################################################################
+
 def main():
 
-    hero = Hero(100, 5, "Rand al'Thor", 0, 0, 0)
+    hero = Hero(10, 5, "Rand al'Thor", 0, 0, 0)
     goblin = Goblin(6, 2, "The Goblin", 5, 0, 0)
     zombie = Zombie(1, 1, "The Zombie", 0, 0, 0)
     medic = Medic(5,1, "The Medic", 6, 0, 0 )
     shadow = Shadow(1, 1, "The Shadow", 10, 0, 0)
     store = Store()
-
+    print(f"\nIt's a showdown between the {goblin.name} and {hero.name}!\n")
     while goblin.alive() and hero.alive():
+        print("-" * 40)
         hero.print_status()
         goblin.print_status()
         print()
@@ -154,6 +153,7 @@ def main():
         print("1. Fight the goblin.")
         print("2. Do nothing.")
         print("3. Flee the fight.")
+        print("*" * 40)
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
@@ -167,18 +167,17 @@ def main():
             print("Invalid input {}".format(raw_input))
         if goblin.health > 0:
             goblin.attack(hero)
-            
     print()
-    print("*" * 40)
-    print(f"""
-Good job defeating the {goblin.name}, {hero.name}! 
-    """)
-    print("*" * 40)
+    print()
+    print(f"Would you like to go to the store? ")
+    print()
     store.go_to_store(hero)
-    print("*" * 40)
     print()
+    print("*" * 40)
+    print(f"A new enemy is approaching... ")
+    print(f"\nIt's a showdown between the {zombie.name} and {hero.name}!\n")
     while zombie.alive() and hero.alive():
-        print(f"\nIt's a showdown between the {zombie.name} and {hero.name}!\n")
+        print("-" * 40)
         hero.print_status()
         zombie.print_status()
         print()
@@ -200,15 +199,16 @@ Good job defeating the {goblin.name}, {hero.name}!
         else:
             print("Invalid input {}".format(raw_input))
     print()
-    print("*" * 40)
-    store.go_to_store(hero)
-    print("*" * 40)
-    print(f"""
-A new enemy is approaching.....
-    """)
-    print("*" * 40)
     print()
+    print(f"Would you like to go to the store? ")
+    print()
+    store.go_to_store(hero)
+    print()
+    print("*" * 40)
+    print(f"A new enemy is approaching... ")
+    print(f"\nIt's a showdown between the {medic.name} and {hero.name}!\n")
     while medic.alive() and hero.alive():
+        print("-" * 40)
         hero.print_status()
         medic.print_status()
         print()
@@ -231,13 +231,16 @@ A new enemy is approaching.....
         if medic.health > 0:
             medic.attack(hero)
     print()
-    print("*" * 40)
+    print()
+    print(f"Would you like to go to the store? ")
+    print()
     store.go_to_store(hero)
-    print(f"""
-Good job defeating the {medic.name}, {hero.name}! A new enemy is approaching.....
-    """)
+    print()
     print("*" * 40)
+    print(f"A new enemy is approaching... ")
+    print(f"\nIt's a showdown between the {shadow.name} and {hero.name}!\n")
     while shadow.alive() and hero.alive():
+        print("-" * 40)
         hero.print_status()
         shadow.print_status()
         print()
@@ -263,13 +266,14 @@ Good job defeating the {medic.name}, {hero.name}! A new enemy is approaching....
         if shadow.health > 0:
             shadow.attack(hero)
     print()
-    print("*" * 40)
+    print()
+    print(f"Would you like to go to the store? ")
+    print()
     store.go_to_store(hero)
-    print(f"""
-Good job defeating the {shadow.name}, {hero.name}! A new enemy is approaching.....
-    """)
+    print()
     print("*" * 40)
-    print()    
+    print(f"A new enemy is approaching... ")  
+    print(f"\nIt's a showdown between the {medic.name} and {hero.name}!\n")
 main()
 
 
