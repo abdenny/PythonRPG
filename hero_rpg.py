@@ -166,7 +166,7 @@ class Store():
                 print("{}. buy {} ({})".format(i + 1, item.name, item.cost))
             print("8. Leave")
             raw_imp = int(input("> "))
-            if raw_imp == 10:
+            if raw_imp == 8:
                 break
             else:
                 ItemToBuy = Store.items[raw_imp - 1]
