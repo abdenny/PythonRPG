@@ -21,7 +21,29 @@ class Character:
             enemy.health -= self.damage
             print(f"{self.name} does {self.damage} damage to the {enemy.name}.\n")
         if enemy.health <= 0:
-            print("The enemy is dead.")
+            print(f"{enemy.name} is dead.")
+            print("""                                       
+@@@@@@@                                      @@@@@@@
+@@@@@@@           @@@@@@@@@@@@@@@            @@@@@@@
+ @@@@@@@@       @@@@@@@@@@@@@@@@@@@        @@@@@@@@
+     @@@@@     @@@@@@@@@@@@@@@@@@@@@     @@@@@
+       @@@@@  @@@@@@@@@@@@@@@@@@@@@@@  @@@@@
+         @@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@
+            @@@@@@@    @@@@@@    @@@@@@
+            @@@@@@      @@@@      @@@@@
+            @@@@@@      @@@@      @@@@@
+             @@@@@@    @@@@@@    @@@@@
+              @@@@@@@@@@@  @@@@@@@@@@
+               @@@@@@@@@@  @@@@@@@@@
+           @@   @@@@@@@@@@@@@@@@@   @@
+           @@@@  @@@@ @ @ @ @ @@@@  @@@@
+          @@@@@   @@@ @ @ @ @ @@@   @@@@@
+        @@@@@      @@@@@@@@@@@@@      @@@@@
+      @@@@          @@@@@@@@@@@          @@@@
+   @@@@@              @@@@@@@              @@@@@
+  @@@@@@@                                 @@@@@@@
+   @@@@@                                   @@@@@""")
+            print(("The game is over"))
             quit()
 
     def alive(self):
@@ -68,6 +90,12 @@ class Medic(Character):
 class Shadow(Character):
     pass
 
+class Orc(Character):
+    pass
+
+class Dragon(Character):
+    pass
+
 class Tonic(object):
     cost = 5
     name = 'Tonic'
@@ -103,13 +131,29 @@ class Evade(object):
         hero.evade += 2
         print("{}'s evade increased to {}.".format(hero.name, hero.evade))
 
+class Hockey_stick(object):
+    cost = 5
+    name = 'Hockey Stick'
+    def apply(self, hero):
+        hero.evade += 2
+        print("{}'s evade increased to {}.".format(hero.name, hero.evade))
+
+class Time_machine(object):
+    cost = 5
+    name = 'Time Machine'
+    def apply(self, hero):
+        hero.evade += 2
+        print("{}'s evade increased to {}.".format(hero.name, hero.evade))
+
 class Store():
     tonic = Tonic()
     super_tonic = SuperTonic()
     sword = Sword()
     armor = Armor()
     evade = Evade()
-    items = [tonic, super_tonic, sword, armor, evade]
+    hockey_stick = Hockey_stick()
+    time_machine = Time_machine()
+    items = [tonic, super_tonic, sword, armor, evade, hockey_stick, time_machine]
     def do_shopping(self, hero):
         while True:
             print("=====================")
@@ -120,7 +164,7 @@ class Store():
             for i in range(len(Store.items)):
                 item = Store.items[i]
                 print("{}. buy {} ({})".format(i + 1, item.name, item.cost))
-            print("10. leave")
+            print("8. Leave")
             raw_imp = int(input("> "))
             if raw_imp == 10:
                 break
@@ -137,11 +181,13 @@ class Store():
 
 def main():
 
-    hero = Hero(10, 5, "Rand al'Thor", 0, 0, 0)
+    hero = Hero(10, 5, "The Hero", 0, 0, 0)
     goblin = Goblin(6, 2, "The Goblin", 5, 0, 0)
     zombie = Zombie(1, 1, "The Zombie", 0, 0, 0)
     medic = Medic(5,1, "The Medic", 6, 0, 0 )
     shadow = Shadow(1, 1, "The Shadow", 10, 0, 0)
+    orc = Orc(6,6,"The Orc", 15, 0, 0)
+    dragon = Dragon(8, 8, "The Dragon", 100, 0, 0)
     store = Store()
     print(f"\nIt's a showdown between the {goblin.name} and {hero.name}!\n")
     while goblin.alive() and hero.alive():
@@ -273,7 +319,65 @@ def main():
     print()
     print("*" * 40)
     print(f"A new enemy is approaching... ")  
-    print(f"\nIt's a showdown between the {medic.name} and {hero.name}!\n")
+    print(f"\nIt's a showdown between the {orc.name} and {hero.name}!\n")
+    while orc.alive() and hero.alive():
+        print("-" * 40)
+        hero.print_status()
+        orc.print_status()
+        print()
+        print("What do you want to do?")
+        print("1. Fight the orc.")
+        print("2. Do nothing.")
+        print("3. Flee the fight.")
+        print("*" * 40)
+        print("> ", end=' ')
+        raw_input = input()
+        if raw_input == "1":
+            hero.attack(orc)
+        elif raw_input == "2":
+            pass
+        elif raw_input == "3":
+            print("Goodbye.")
+            break
+        else:
+            print("Invalid input {}".format(raw_input))
+        if orc.health > 0:
+            orc.attack(hero)
+    print()
+    print()
+    print(f"Would you like to go to the store? ")
+    print()
+    store.go_to_store(hero)
+    print()
+    print("*" * 40)
+    print(f"It's the final battle... ")
+    print(f"\nIt's a showdown between the {dragon.name} and {hero.name}!\n")
+    while dragon.alive() and hero.alive():
+        print("-" * 40)
+        hero.print_status()
+        dragon.print_status()
+        print()
+        print("What do you want to do?")
+        print("1. Fight the dragon.")
+        print("2. Do nothing.")
+        print("3. Flee the fight.")
+        print("*" * 40)
+        print("> ", end=' ')
+        raw_input = input()
+        if raw_input == "1":
+            hero.attack(dragon)
+        elif raw_input == "2":
+            pass
+        elif raw_input == "3":
+            print("Goodbye.")
+            break
+        else:
+            print("Invalid input {}".format(raw_input))
+        if dragon.health > 0:
+            dragon.attack(hero)
+    print()
+    print()
+
 main()
 
 
