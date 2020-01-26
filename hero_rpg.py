@@ -93,6 +93,9 @@ class Shadow(Character):
 class Orc(Character):
     pass
 
+class Bard(Character):
+    pass
+
 class Dragon(Character):
     pass
 
@@ -187,7 +190,8 @@ def main():
     medic = Medic(5,1, "The Medic", 6, 0, 0 )
     shadow = Shadow(1, 1, "The Shadow", 10, 0, 0)
     orc = Orc(6,6,"The Orc", 15, 0, 0)
-    dragon = Dragon(8, 8, "The Dragon", 100, 0, 0)
+    bard = Bard(100, 1, "The Bard", 10, 0, 0)
+    dragon = Dragon(8, 16, "The Dragon", 100, 0, 0)
     store = Store()
     print(f"\nIt's a showdown between the {goblin.name} and {hero.name}!\n")
     while goblin.alive() and hero.alive():
@@ -343,6 +347,38 @@ def main():
             print("Invalid input {}".format(raw_input))
         if orc.health > 0:
             orc.attack(hero)
+    print()
+    print()
+    print(f"Would you like to go to the store? ")
+    print()
+    store.go_to_store(hero)
+    print()
+    print("*" * 40)
+    print(f"A new enemy is approaching... ")  
+    print(f"\nIt's a showdown between the {bard.name} and {hero.name}!\n")
+    while bard.alive() and hero.alive():
+        print("-" * 40)
+        hero.print_status()
+        bard.print_status()
+        print()
+        print("What do you want to do?")
+        print("1. Fight the bard.")
+        print("2. Do nothing.")
+        print("3. Flee the fight.")
+        print("*" * 40)
+        print("> ", end=' ')
+        raw_input = input()
+        if raw_input == "1":
+            print("How dare you! BE GONE....")
+            break
+        elif raw_input == "2":
+            print("Your benevolence has served you well... BE HEALED.")
+            hero.health += 5
+        elif raw_input == "3":
+            print("Goodbye.")
+            break
+        else:
+            print("Invalid input {}".format(raw_input))
     print()
     print()
     print(f"Would you like to go to the store? ")
