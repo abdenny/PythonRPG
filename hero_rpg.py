@@ -138,15 +138,15 @@ class Hockey_stick(object):
     cost = 5
     name = 'Hockey Stick'
     def apply(self, hero):
-        hero.evade += 2
-        print("{}'s evade increased to {}.".format(hero.name, hero.evade))
+        hero.power += 4
+        print("{}'s evade increased to {}.".format(hero.name, hero.power))
 
-class Time_machine(object):
+class Piggy_bank(object):
     cost = 5
-    name = 'Time Machine'
+    name = 'Piggy Bank'
     def apply(self, hero):
-        hero.evade += 2
-        print("{}'s evade increased to {}.".format(hero.name, hero.evade))
+        hero.coins += 4
+        print("{}'s coins increased to {}.".format(hero.name, hero.coins))
 
 class Store():
     tonic = Tonic()
@@ -155,21 +155,26 @@ class Store():
     armor = Armor()
     evade = Evade()
     hockey_stick = Hockey_stick()
-    time_machine = Time_machine()
-    items = [tonic, super_tonic, sword, armor, evade, hockey_stick, time_machine]
+    piggy_bank = Piggy_bank()
+    items = [tonic, super_tonic, sword, armor, evade, hockey_stick, piggy_bank]
     def do_shopping(self, hero):
         while True:
             print("=====================")
             print("Welcome to the store!")
             print("=====================")
-            print("You have {} coins.".format(hero.coins))
+            print(f"You have {hero.health} health, {hero.power} power, and {hero.coins} coins.")
             print("What do you want to do?")
             for i in range(len(Store.items)):
                 item = Store.items[i]
                 print("{}. buy {} ({})".format(i + 1, item.name, item.cost))
             print("8. Leave")
             raw_imp = int(input("> "))
-            if raw_imp == 8:
+            if raw_imp == 7:
+                ItemToBuy = Store.items[raw_imp - 1]
+                item = ItemToBuy
+                hero.buy(item)
+                break
+            elif raw_imp == 8:
                 break
             else:
                 ItemToBuy = Store.items[raw_imp - 1]
@@ -223,6 +228,7 @@ def main():
     print()
     store.go_to_store(hero)
     print()
+    
     print("*" * 40)
     print(f"A new enemy is approaching... ")
     print(f"\nIt's a showdown between the {zombie.name} and {hero.name}!\n")
@@ -254,6 +260,7 @@ def main():
     print()
     store.go_to_store(hero)
     print()
+    
     print("*" * 40)
     print(f"A new enemy is approaching... ")
     print(f"\nIt's a showdown between the {medic.name} and {hero.name}!\n")
@@ -286,6 +293,7 @@ def main():
     print()
     store.go_to_store(hero)
     print()
+    
     print("*" * 40)
     print(f"A new enemy is approaching... ")
     print(f"\nIt's a showdown between the {shadow.name} and {hero.name}!\n")
@@ -321,6 +329,7 @@ def main():
     print()
     store.go_to_store(hero)
     print()
+    
     print("*" * 40)
     print(f"A new enemy is approaching... ")  
     print(f"\nIt's a showdown between the {orc.name} and {hero.name}!\n")
@@ -353,6 +362,7 @@ def main():
     print()
     store.go_to_store(hero)
     print()
+    
     print("*" * 40)
     print(f"A new enemy is approaching... ")  
     print(f"\nIt's a showdown between the {bard.name} and {hero.name}!\n")
@@ -374,6 +384,7 @@ def main():
         elif raw_input == "2":
             print("Your benevolence has served you well... BE HEALED.")
             hero.health += 5
+            break
         elif raw_input == "3":
             print("Goodbye.")
             break
@@ -385,6 +396,7 @@ def main():
     print()
     store.go_to_store(hero)
     print()
+    
     print("*" * 40)
     print(f"It's the final battle... ")
     print(f"\nIt's a showdown between the {dragon.name} and {hero.name}!\n")
@@ -412,7 +424,8 @@ def main():
         if dragon.health > 0:
             dragon.attack(hero)
     print()
-    print()
+    print("YOU SLAYED THE DRAGON! YOU WIN!!!!!!")
+
 
 main()
 
