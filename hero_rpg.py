@@ -139,7 +139,7 @@ class Hockey_stick(object):
     name = 'Hockey Stick'
     def apply(self, hero):
         hero.power += 4
-        print("{}'s evade increased to {}.".format(hero.name, hero.power))
+        print("{}'s power increased to {}.".format(hero.name, hero.power))
 
 class Piggy_bank(object):
     cost = 5
@@ -196,7 +196,7 @@ def main():
     shadow = Shadow(1, 1, "The Shadow", 10, 0, 0)
     orc = Orc(6,6,"The Orc", 15, 0, 0)
     bard = Bard(100, 1, "The Bard", 10, 0, 0)
-    dragon = Dragon(8, 16, "The Dragon", 100, 0, 0)
+    dragon = Dragon(8, 25, "The Dragon", 100, 0, 0)
     store = Store()
     print(f"\nIt's a showdown between the {goblin.name} and {hero.name}!\n")
     while goblin.alive() and hero.alive():
