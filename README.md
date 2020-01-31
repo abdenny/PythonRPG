@@ -1,1 +1,1 @@
-A text-based adventure game created to improve my skills in Python and OOP principles.
+A text-based adventure game created to improve my skills in Python, and practice OOP principles.
